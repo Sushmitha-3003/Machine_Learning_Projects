@@ -8,7 +8,7 @@ st.set_page_config(page_title="Diabetes Prediction", layout="centered")
 
 # Load the model and scalar safely
 model_path = os.path.join(os.path.dirname(__file__), "bagging_model.pkl")
-scalar_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")  # You used 'scalar'
+scalar_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
 
 model = joblib.load(model_path)
 scalar = joblib.load(scalar_path)
@@ -31,15 +31,26 @@ age = st.number_input("Age", min_value=0, max_value=120, value=33)
 if st.button("Predict"):
     input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness,
                             insulin, bmi, diabetes_pedigree, age]])
-    
+
     scaled_input = scalar.transform(input_data)
     prediction = model.predict(scaled_input)
+    probability = model.predict_proba(scaled_input)[0][1]  
+    confidence = round(probability * 100, 2)
 
     if prediction[0] == 1:
-        st.error("⚠️ The model predicts that the person is likely to have diabetes.")
+        st.error(f"⚠️ The model predicts that the person is **likely to have diabetes** with a confidence of **{confidence}%**.")
     else:
-        st.success("✅ The model predicts that the person is unlikely to have diabetes.")
+        st.success(f"✅ The model predicts that the person is **unlikely to have diabetes** with a confidence of **{100 - confidence}%**.")
 
-# Footer
+# Footer / Conclusion
 st.markdown("---")
-st.caption("Made with ❤️ using Streamlit")
+st.markdown("### 🔚 Conclusion")
+st.markdown("""
+This app uses a trained Bagging Classifier model to predict the likelihood of diabetes 
+based on key medical inputs.
+
+> ⚠️ **Disclaimer:** This tool is for educational and awareness purposes only. For an official diagnosis, please consult a healthcare professional.
+
+---
+Made with ❤️ by **Sushmitha A.** using *Python*, *Streamlit*, and *Machine Learning*.
+""")
