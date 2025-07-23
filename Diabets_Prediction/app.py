@@ -46,11 +46,4 @@ if st.button("Predict"):
 st.markdown("---")
 st.markdown("### 🔚 Conclusion")
 st.markdown("""
-This app uses a trained Bagging Classifier model to predict the likelihood of diabetes 
-based on key medical inputs.
-
-> ⚠️ **Disclaimer:** This tool is for educational and awareness purposes only. For an official diagnosis, please consult a healthcare professional.
-
----
-Made with ❤️ by **Sushmitha A.** using *Python*, *Streamlit*, and *Machine Learning*.
 """)
